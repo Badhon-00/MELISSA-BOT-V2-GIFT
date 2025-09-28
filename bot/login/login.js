@@ -113,7 +113,7 @@ else {
 	subTitleArray.push(subTitle);
 }
 const author = ("Created by Badhon with ♡");
-const srcUrl = ("Source code: https://github.com/Badhon-00/MELISSA-BOT-V2-GIFT.git");
+const srcUrl = ("Source code: https://github.com/Badhon-00/MELISSA-BOT");
 const fakeRelease = ("ALL VERSIONS NOT RELEASED HERE ARE FAKE");
 for (const t of subTitleArray) {
 	const textColor2 = gradient("#9F98E8", "#AFF6CF")(t);
