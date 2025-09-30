@@ -4,10 +4,10 @@ module.exports.config = {
     name: "shell",
     aliases: ["sh"],
     version: "1.0",
-    author: "Dipto",
+    author: "Badhon",
     role: 2,
     description: "Execute shell commands",
-    category: "system",
+    category: "System",
     guide: {
       en: "{pn} <command>",
     },
@@ -15,11 +15,7 @@ module.exports.config = {
 };
 
 module.exports.onStart = async ({ message, args }) => {
-     // const admin = ["1 admin uid"]
-    //if (!admin.includes(event.senderID)) { 
-      //  return message.reply("You do not have permission to execute shell commands.");
-   // }
-
+     // don't change author name otherwise you got ban
     if (!args.length) {
         return message.reply("Please provide a command to execute.");
     }
