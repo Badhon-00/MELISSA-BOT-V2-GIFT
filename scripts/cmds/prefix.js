@@ -1,18 +1,17 @@
 const fs = require("fs-extra");
 const { utils } = global;
 
-
 const BOT_ADMIN_IDS = ["100028239582347", "61557409693409", "61571421696077"];
 
 module.exports = {
 	config: {
 		name: "prefix",
-		version: "4.0",
+		version: "4.1",
 		author: "BADHON",
 		countDown: 5,
 		role: 0,
 		description: "Change bot command prefix - Badhon access only",
-		category: "system",
+		category: "admin",
 		guide: {
 			en: "   {pn} <new prefix>: Change prefix for current chat\n   Example: {pn} !\n\n   {pn} <new prefix> -g: Change system-wide prefix (Badhon only)\n   Example: {pn} ! -g\n\n   {pn} reset: Reset to default prefix"
 		}
@@ -74,8 +73,8 @@ module.exports = {
 			return message.SyntaxError();
 
 		const now = new Date();
-		const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000)); // UTC+6
-		const date = bangladeshTime.toLocaleDateString('en-GB'); // DD/MM/YYYY
+		const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000)); 
+		const date = bangladeshTime.toLocaleDateString('en-GB'); 
 		const day = bangladeshTime.toLocaleDateString('en-US', { weekday: 'long' });
 		const time = bangladeshTime.toLocaleTimeString('en-US', { 
 			hour: '2-digit', 
@@ -176,16 +175,12 @@ module.exports = {
 │
 ├───  𝗡𝗘𝗪 𝗣𝗥𝗘𝗙𝗜𝗫  ───
 ├ ➤ 「 ${newPrefix} 」
-│
 ├───  𝗧𝗜𝗠𝗘 𝗜𝗡𝗙𝗢  ───
 ├ ➤ 𝗗𝗮𝘁𝗲: ${date}
 ├ ➤ 𝗗𝗮𝘆: ${day}
 ├ ➤ 𝗧𝗶𝗺𝗲: ${time}
-├ ➤ 𝗧𝗶𝗺𝗲𝘇𝗼𝗻𝗲: Bangladesh (Dhaka)
-│
 ├───  𝗔𝗗𝗠𝗜𝗡  ───
 ├ ➤ 𝗔𝗰𝘁𝗶𝗼𝗻 𝗯𝘆: 𝗕𝗮𝗱𝗵𝗼𝗻
-│
 ├───  𝗔𝗖𝗧𝗜𝗢𝗡  ───
 ├ ➤ 𝗥𝗲𝗮𝗰𝘁 𝘁𝗼 𝘁𝗵𝗶𝘀 𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝘁𝗼 𝗰𝗼𝗻𝗳𝗶𝗿𝗺
 │
@@ -197,7 +192,7 @@ module.exports = {
 	},
 
 	onReaction: async function ({ message, threadsData, event, Reaction, getLang }) {
-		const { author, newPrefix, setGlobal } = Reaction;
+		const { author, newPrefix, setGlobal, messageID } = Reaction;
 		
 
 		if (!BOT_ADMIN_IDS.includes(event.userID)) {
@@ -205,14 +200,20 @@ module.exports = {
 		}
 		
 		const now = new Date();
-		const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000)); // UTC+6
-		const date = bangladeshTime.toLocaleDateString('en-GB'); // DD/MM/YYYY
+		const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000)); 
+		const date = bangladeshTime.toLocaleDateString('en-GB'); 
 		const day = bangladeshTime.toLocaleDateString('en-US', { weekday: 'long' });
 		const time = bangladeshTime.toLocaleTimeString('en-US', { 
 			hour: '2-digit', 
 			minute: '2-digit',
 			hour12: true 
 		});
+
+		try {
+			await message.unsend(Reaction.messageID);
+		} catch (e) {
+			console.log("Error deleting message:", e);
+		}
 
 		if (setGlobal) {
 			global.GoatBot.config.prefix = newPrefix;
@@ -229,8 +230,6 @@ module.exports = {
 ├ ➤ 𝗗𝗮𝘁𝗲: ${date}
 ├ ➤ 𝗗𝗮𝘆: ${day}
 ├ ➤ 𝗧𝗶𝗺𝗲: ${time}
-├ ➤ 𝗧𝗶𝗺𝗲𝘇𝗼𝗻𝗲: Bangladesh (Dhaka)
-│
 ├───  𝗔𝗗𝗠𝗜𝗡 𝗜𝗡𝗙𝗢  ───
 ├ ➤ 𝗔𝗰𝘁𝗶𝗼𝗻 𝗯𝘆: 𝗕𝗮𝗱𝗵𝗼𝗻
 ├ ➤ 𝗧𝘆𝗽𝗲: System Update
@@ -246,13 +245,10 @@ module.exports = {
 │
 ├───  𝗖𝗛𝗔𝗧  ───
 ├ ➤ ${getLang("successThisThread", newPrefix)}
-│
 ├───  𝗧𝗜𝗠𝗘 𝗜𝗡𝗙𝗢  ───
 ├ ➤ 𝗗𝗮𝘁𝗲: ${date}
 ├ ➤ 𝗗𝗮𝘆: ${day}
 ├ ➤ 𝗧𝗶𝗺𝗲: ${time}
-├ ➤ 𝗧𝗶𝗺𝗲𝘇𝗼𝗻𝗲: Bangladesh (Dhaka)
-│
 ├───  𝗔𝗗𝗠𝗜𝗡 𝗜𝗡𝗙𝗢  ───
 ├ ➤ 𝗔𝗰𝘁𝗶𝗼𝗻 𝗯𝘆: 𝗕𝗮𝗱𝗵𝗼𝗻
 ├ ➤ 𝗧𝘆𝗽𝗲: Chat Update
