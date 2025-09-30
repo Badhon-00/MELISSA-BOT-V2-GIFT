@@ -2,9 +2,9 @@ const fs = require("fs-extra");
 
 module.exports = {
 	config: {
-		name: "restart",
+		name: "rst",
 		version: "1.1",
-		author: "NTKhang",
+		author: "Badhon",
 		countDown: 5,
 		role: 2,
 		description: {
@@ -23,15 +23,17 @@ module.exports = {
 			restartting: "🔄 | Đang khởi động lại bot..."
 		},
 		en: {
-			restartting: "🔄 | Restarting bot..."
+			restartting: "┌───  🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀  ───\n├➤ 🐤 Melissa Bot is restarting... 🐤 \n└───  🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀  ───",
+			restartSuccess: "┌───  🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀  ───\n├➤ 🎀 Melissa Bot has been successfully restarted! 🎀\n├➤ ⏰ Melissa's Restarting time: %1s\n└───  🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀  ───"
 		}
 	},
 
-	onLoad: function ({ api }) {
+	onLoad: function ({ api, getLang }) {
 		const pathFile = `${__dirname}/tmp/restart.txt`;
 		if (fs.existsSync(pathFile)) {
 			const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
-			api.sendMessage(`✅ | Bot restarted\n⏰ | Time: ${(Date.now() - time) / 1000}s`, tid);
+			const restartTime = ((Date.now() - time) / 1000).toFixed(2);
+			api.sendMessage(getLang("restartSuccess", restartTime), tid);
 			fs.unlinkSync(pathFile);
 		}
 	},
