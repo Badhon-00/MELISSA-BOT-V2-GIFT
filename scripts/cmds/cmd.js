@@ -28,19 +28,14 @@ module.exports = {
 	config: {
 		name: "cmd",
 		version: "1.17",
-		author: "NTKhang",
+		author: "Badhon",
 		countDown: 5,
 		role: 2,
 		description: {
-			vi: "Quản lý các tệp lệnh của bạn",
 			en: "Manage your command files"
 		},
-		category: "owner",
+		category: "Owner",
 		guide: {
-			vi: "   {pn} load <tên file lệnh>"
-				+ "\n   {pn} loadAll"
-				+ "\n   {pn} install <url> <tên file lệnh>: Tải xuống và cài đặt một tệp lệnh từ một url, url là đường dẫn đến tệp lệnh (raw)"
-				+ "\n   {pn} install <tên file lệnh> <code>: Tải xuống và cài đặt một tệp lệnh từ một code, code là mã của lệnh",
 			en: "   {pn} load <command file name>"
 				+ "\n   {pn} loadAll"
 				+ "\n   {pn} install <url> <command file name>: Download and install a command file from a url, url is the path to the file (raw)"
@@ -49,49 +44,29 @@ module.exports = {
 	},
 
 	langs: {
-		vi: {
-			missingFileName: "⚠️ | Vui lòng nhập vào tên lệnh bạn muốn reload",
-			loaded: "✅ | Đã load command \"%1\" thành công",
-			loadedError: "❌ | Load command \"%1\" thất bại với lỗi\n%2: %3",
-			loadedSuccess: "✅ | Đã load thành công (%1) command",
-			loadedFail: "❌ | Load thất bại (%1) command\n%2",
-			openConsoleToSeeError: "👀 | Hãy mở console để xem chi tiết lỗi",
-			missingCommandNameUnload: "⚠️ | Vui lòng nhập vào tên lệnh bạn muốn unload",
-			unloaded: "✅ | Đã unload command \"%1\" thành công",
-			unloadedError: "❌ | Unload command \"%1\" thất bại với lỗi\n%2: %3",
-			missingUrlCodeOrFileName: "⚠️ | Vui lòng nhập vào url hoặc code và tên file lệnh bạn muốn cài đặt",
-			missingUrlOrCode: "⚠️ | Vui lòng nhập vào url hoặc code của tệp lệnh bạn muốn cài đặt",
-			missingFileNameInstall: "⚠️ | Vui lòng nhập vào tên file để lưu lệnh (đuôi .js)",
-			invalidUrl: "⚠️ | Vui lòng nhập vào url hợp lệ",
-			invalidUrlOrCode: "⚠️ | Không thể lấy được mã lệnh",
-			alreadExist: "⚠️ | File lệnh đã tồn tại, bạn có chắc chắn muốn ghi đè lên file lệnh cũ không?\nThả cảm xúc bất kì vào tin nhắn này để tiếp tục",
-			installed: "✅ | Đã cài đặt command \"%1\" thành công, file lệnh được lưu tại %2",
-			installedError: "❌ | Cài đặt command \"%1\" thất bại với lỗi\n%2: %3",
-			missingFile: "⚠️ | Không tìm thấy tệp lệnh \"%1\"",
-			invalidFileName: "⚠️ | Tên tệp lệnh không hợp lệ",
-			unloadedFile: "✅ | Đã unload lệnh \"%1\""
-		},
 		en: {
 			missingFileName: "⚠️ | Please enter the command name you want to reload",
-			loaded: "✅ | Loaded command \"%1\" successfully",
-			loadedError: "❌ | Failed to load command \"%1\" with error\n%2: %3",
-			loadedSuccess: "✅ | Loaded successfully (%1) command",
-			loadedFail: "❌ | Failed to load (%1) command\n%2",
+			loaded: "✅ | CMD LOAD (%1) SUCCESSFULLY IN MELISSA'S SYSTEM",
+			loadedError: "❌ | Load command \"%1\" failed with error\n%2: %3",
+			loadedSuccess: "✅ | LOADED ALL COMMAND'S SUCCESSFULLY IN MELISSA'S SYSTEM\n━━━━━━━━━━━━━━━━━━━━\n📊 TOTAL COMMANDS: %1\n✅ SUCCESSFULLY LOADED: %2\n❌ FAILED TO LOAD: %3\n━━━━━━━━━━━━━━━━━━━━",
+			loadedFail: "❌ | Load failed (%1) command\n%2",
 			openConsoleToSeeError: "👀 | Open console to see error details",
 			missingCommandNameUnload: "⚠️ | Please enter the command name you want to unload",
 			unloaded: "✅ | Unloaded command \"%1\" successfully",
-			unloadedError: "❌ | Failed to unload command \"%1\" with error\n%2: %3",
+			unloadedError: "❌ | Unload command \"%1\" failed with error\n%2: %3",
 			missingUrlCodeOrFileName: "⚠️ | Please enter the url or code and command file name you want to install",
 			missingUrlOrCode: "⚠️ | Please enter the url or code of the command file you want to install",
 			missingFileNameInstall: "⚠️ | Please enter the file name to save the command (with .js extension)",
 			invalidUrl: "⚠️ | Please enter a valid url",
 			invalidUrlOrCode: "⚠️ | Unable to get command code",
 			alreadExist: "⚠️ | The command file already exists, are you sure you want to overwrite the old command file?\nReact to this message to continue",
-			installed: "✅ | Installed command \"%1\" successfully, the command file is saved at %2",
+			installed: "✅ | CMD INSTALLATION (%1) IS DONE IN MELISSA'S SYSTEM",
 			installedError: "❌ | Failed to install command \"%1\" with error\n%2: %3",
 			missingFile: "⚠️ | Command file \"%1\" not found",
 			invalidFileName: "⚠️ | Invalid command file name",
-			unloadedFile: "✅ | Unloaded command \"%1\""
+			unloadedFile: "✅ | Unloaded command \"%1\"",
+			loadSingle: "✅ | CMD LOAD (%1) SUCCESSFULLY IN MELISSA'S SYSTEM",
+			batchLoadResult: "🔰 | BATCH LOAD COMPLETED IN MELISSA'S SYSTEM\n━━━━━━━━━━━━━━━━━━━━\n📁 TOTAL COMMANDS: %1\n✅ SUCCESSFULLY LOADED: %2\n❌ FAILED TO LOAD: %3\n📋 FAILED COMMANDS:\n%4\n━━━━━━━━━━━━━━━━━━━━"
 		}
 	},
 
@@ -105,7 +80,7 @@ module.exports = {
 				return message.reply(getLang("missingFileName"));
 			const infoLoad = loadScripts("cmds", args[1], log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang);
 			if (infoLoad.status == "success")
-				message.reply(getLang("loaded", infoLoad.name));
+				message.reply(getLang("loadSingle", infoLoad.name));
 			else {
 				message.reply(
 					getLang("loadedError", infoLoad.name, infoLoad.error.name, infoLoad.error.message)
@@ -128,6 +103,7 @@ module.exports = {
 					)
 					.map(item => item = item.split(".")[0]) :
 				args.slice(1);
+			
 			const arraySucces = [];
 			const arrayFail = [];
 
@@ -136,18 +112,19 @@ module.exports = {
 				if (infoLoad.status == "success")
 					arraySucces.push(fileName);
 				else
-					arrayFail.push(` ❗ ${fileName} => ${infoLoad.error.name}: ${infoLoad.error.message}`);
+					arrayFail.push(`• ${fileName} → ${infoLoad.error.name}: ${infoLoad.error.message}`);
 			}
 
-			let msg = "";
-			if (arraySucces.length > 0)
-				msg += getLang("loadedSuccess", arraySucces.length);
-			if (arrayFail.length > 0) {
-				msg += (msg ? "\n" : "") + getLang("loadedFail", arrayFail.length, arrayFail.join("\n"));
-				msg += "\n" + getLang("openConsoleToSeeError");
-			}
+			const totalCommands = fileNeedToLoad.length;
+			const successCount = arraySucces.length;
+			const failCount = arrayFail.length;
+			const failedCommandsList = arrayFail.join("\n");
 
-			message.reply(msg);
+			if (failCount > 0) {
+				message.reply(getLang("batchLoadResult", totalCommands, successCount, failCount, failedCommandsList));
+			} else {
+				message.reply(getLang("loadedSuccess", totalCommands, successCount, failCount));
+			}
 		}
 		else if (args[0] == "unload") {
 			if (!args[1])
@@ -236,7 +213,7 @@ module.exports = {
 			else {
 				const infoLoad = loadScripts("cmds", fileName, log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang, rawCode);
 				infoLoad.status == "success" ?
-					message.reply(getLang("installed", infoLoad.name, path.join(__dirname, fileName).replace(process.cwd(), ""))) :
+					message.reply(getLang("installed", infoLoad.name)) :
 					message.reply(getLang("installedError", infoLoad.name, infoLoad.error.name, infoLoad.error.message));
 			}
 		}
@@ -251,7 +228,7 @@ module.exports = {
 			return;
 		const infoLoad = loadScripts("cmds", fileName, log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang, rawCode);
 		infoLoad.status == "success" ?
-			message.reply(getLang("installed", infoLoad.name, path.join(__dirname, fileName).replace(process.cwd(), ""))) :
+			message.reply(getLang("installed", infoLoad.name)) :
 			message.reply(getLang("installedError", infoLoad.name, infoLoad.error.name, infoLoad.error.message));
 	}
 };
@@ -262,10 +239,6 @@ const spinner = "\\|/-";
 let count = 0;
 
 function loadScripts(folder, fileName, log, configCommands, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, getLang, rawCode) {
-	// global.GoatBot[folderModules == "cmds" ? "commandFilesPath" : "eventCommandsFilesPath"].push({
-	// 	filePath: pathCommand,
-	// 	commandName: [commandName, ...validAliases]
-	// });
 	const storageCommandFilesPath = global.GoatBot[folder == "cmds" ? "commandFilesPath" : "eventCommandsFilesPath"];
 
 	try {
@@ -287,7 +260,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			setMap = "eventCommands";
 			commandType = "event command";
 		}
-		// const pathCommand = path.normalize(path.normalize(process.cwd() + `/${folder}/${fileName}.js`));
 		let pathCommand;
 		if (process.env.NODE_ENV == "development") {
 			const devPath = path.normalize(process.cwd() + `/scripts/${folder}/${fileName}.dev.js`);
@@ -299,7 +271,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 		else
 			pathCommand = path.normalize(process.cwd() + `/scripts/${folder}/${fileName}.js`);
 
-		// ————————————————— CHECK PACKAGE ————————————————— //
 		const contentFile = fs.readFileSync(pathCommand, "utf8");
 		let allPackage = contentFile.match(regExpCheckPackage);
 		if (allPackage) {
@@ -307,9 +278,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				.map(p => p.match(/[`'"]([^`'"]+)[`'"]/)[1])
 				.filter(p => p.indexOf("/") !== 0 && p.indexOf("./") !== 0 && p.indexOf("../") !== 0 && p.indexOf(__dirname) !== 0);
 			for (let packageName of allPackage) {
-				// @user/abc => @user/abc
-				// @user/abc/dist/xyz.js => @user/abc
-				// @user/abc/dist/xyz => @user/abc
 				if (packageName.startsWith('@'))
 					packageName = packageName.split('/').slice(0, 2).join('/');
 				else
@@ -337,15 +305,15 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				}
 			}
 		}
-		// ———————————————— GET OLD COMMAND ———————————————— //
+
 		const oldCommand = require(pathCommand);
 		const oldCommandName = oldCommand?.config?.name;
-		// —————————————— CHECK COMMAND EXIST ——————————————— //
+
 		if (!oldCommandName) {
 			if (GoatBot[setMap].get(oldCommandName)?.location != pathCommand)
 				throw new Error(`${commandType} name "${oldCommandName}" is already exist in command "${removeHomeDir(GoatBot[setMap].get(oldCommandName)?.location || "")}"`);
 		}
-		// ————————————————— CHECK ALIASES ————————————————— //
+
 		if (oldCommand.config.aliases) {
 			let oldAliases = oldCommand.config.aliases;
 			if (typeof oldAliases == "string")
@@ -353,27 +321,21 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			for (const alias of oldAliases)
 				GoatBot.aliases.delete(alias);
 		}
-		// ——————————————— DELETE OLD COMMAND ——————————————— //
+
 		delete require.cache[require.resolve(pathCommand)];
-		// —————————————————————————————————————————————————— //
 
-
-
-		// ———————————————— GET NEW COMMAND ———————————————— //
 		const command = require(pathCommand);
 		command.location = pathCommand;
 		const configCommand = command.config;
 		if (!configCommand || typeof configCommand != "object")
 			throw new Error("config of command must be an object");
-		// —————————————————— CHECK SYNTAX —————————————————— //
+
 		const scriptName = configCommand.name;
 
-		// Check onChat function
 		const indexOnChat = allOnChat.findIndex(item => item == oldCommandName);
 		if (indexOnChat != -1)
 			allOnChat.splice(indexOnChat, 1);
 
-		// Check onFirstChat function
 		const indexOnFirstChat = allOnChat.findIndex(item => item == oldCommandName);
 		let oldOnFirstChat;
 		if (indexOnFirstChat != -1) {
@@ -381,17 +343,14 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			allOnFirstChat.splice(indexOnFirstChat, 1);
 		}
 
-		// Check onEvent function
 		const indexOnEvent = allOnEvent.findIndex(item => item == oldCommandName);
 		if (indexOnEvent != -1)
 			allOnEvent.splice(indexOnEvent, 1);
 
-		// Check onAnyEvent function
 		const indexOnAnyEvent = allOnAnyEvent.findIndex(item => item == oldCommandName);
 		if (indexOnAnyEvent != -1)
 			allOnAnyEvent.splice(indexOnAnyEvent, 1);
 
-		// Check onLoad function
 		if (command.onLoad)
 			command.onLoad({ api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData });
 
@@ -402,7 +361,7 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 			throw new Error('Function onStart must be a function!');
 		if (!scriptName)
 			throw new Error('Name of command is missing!');
-		// ————————————————— CHECK ALIASES ————————————————— //
+
 		if (configCommand.aliases) {
 			let { aliases } = configCommand;
 			if (typeof aliases == "string")
@@ -415,15 +374,14 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 				GoatBot.aliases.set(alias, scriptName);
 			}
 		}
-		// ————————————————— CHECK ENVCONFIG ————————————————— //
-		// env Global
+
 		if (envGlobal) {
 			if (typeof envGlobal != "object" || Array.isArray(envGlobal))
 				throw new Error("envGlobal must be an object");
 			for (const key in envGlobal)
 				configCommands.envGlobal[key] = envGlobal[key];
 		}
-		// env Config
+
 		if (envConfig && typeof envConfig == "object" && !Array.isArray(envConfig)) {
 			if (!configCommands[typeEnvCommand][scriptName])
 				configCommands[typeEnvCommand][scriptName] = {};
@@ -437,7 +395,6 @@ function loadScripts(folder, fileName, log, configCommands, api, threadModel, us
 		if (findIndex != -1)
 			configCommands[keyUnloadCommand].splice(findIndex, 1);
 		fs.writeFileSync(client.dirConfigCommands, JSON.stringify(configCommands, null, 2));
-
 
 		if (command.onChat)
 			allOnChat.push(scriptName);
@@ -504,7 +461,7 @@ function unloadScripts(folder, fileName, configCommands, getLang) {
 	const indexOnAnyEvent = allOnAnyEvent.findIndex(item => item == commandName);
 	if (indexOnAnyEvent != -1)
 		allOnAnyEvent.splice(indexOnAnyEvent, 1);
-	// ————————————————— CHECK ALIASES ————————————————— //
+
 	if (command.config.aliases) {
 		let aliases = command.config?.aliases || [];
 		if (typeof aliases == "string")
