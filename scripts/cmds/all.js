@@ -18,7 +18,7 @@ module.exports = {
 		const { participantIDs } = event;
 		const lengthAllUser = participantIDs.length;
 		const mentions = [];
-		let body = "Tora shobai koi ree " + (args.join(" ") || "@all");
+		let body = "Tora shobai koi ree " + (args.join(" ") || "@Tora shobai koi ree");
 		let bodyLength = body.length;
 		let i = 0;
 		for (const uid of participantIDs) {
