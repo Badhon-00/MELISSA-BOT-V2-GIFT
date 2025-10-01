@@ -5,31 +5,20 @@ module.exports = {
 	config: {
 		name: "busy",
 		version: "1.6",
-		author: "NTKhang",
+		author: "Badhon",
 		countDown: 5,
 		role: 0,
 		description: {
-			vi: "bật chế độ không làm phiền, khi bạn được tag bot sẽ thông báo",
 			en: "turn on do not disturb mode, when you are tagged bot will notify"
 		},
-		category: "box chat",
+		category: "D.N.D",
 		guide: {
-			vi: "   {pn} [để trống | <lý do>]: bật chế độ không làm phiền"
-				+ "\n   {pn} off: tắt chế độ không làm phiền",
 			en: "   {pn} [empty | <reason>]: turn on do not disturb mode"
 				+ "\n   {pn} off: turn off do not disturb mode"
 		}
 	},
 
 	langs: {
-		vi: {
-			turnedOff: "✅ | Đã tắt chế độ không làm phiền",
-			turnedOn: "✅ | Đã bật chế độ không làm phiền",
-			turnedOnWithReason: "✅ | Đã bật chế độ không làm phiền với lý do: %1",
-			turnedOnWithoutReason: "✅ | Đã bật chế độ không làm phiền",
-			alreadyOn: "Hiện tại người dùng %1 đang bận",
-			alreadyOnWithReason: "Hiện tại người dùng %1 đang bận với lý do: %2"
-		},
 		en: {
 			turnedOff: "✅ | Do not disturb mode has been turned off",
 			turnedOn: "✅ | Do not disturb mode has been turned on",
