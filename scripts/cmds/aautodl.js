@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = {
   config: {
-    name: "autodown",
+    name: "autodl",
     aliases: ["autodl"],
     version: "1.6",
     author: "Badhon",
