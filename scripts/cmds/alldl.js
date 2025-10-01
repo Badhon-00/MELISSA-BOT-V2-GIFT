@@ -29,7 +29,7 @@ module.exports = {
       return api.sendMessage("❌ | Please provide a video link to download.", event.threadID, event.messageID);
     }
     try {
-      api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+      api.setMessageReaction("🐸", event.messageID, (err) => {}, true);
       const { data } = await axios.get(`${await baseApiUrl()}/alldl?url=${encodeURIComponent(dipto)}`);
       const filePath = __dirname + `/cache/vid.mp4`;
       if(!fs.existsSync(__dirname + '/cache')){
@@ -75,7 +75,7 @@ module.exports = {
 ${data.cp ? `📝 𝗖𝗮𝗽𝘁𝗶𝗼𝗻: ${data.cp}` : ''}
       `.trim();
 
-      api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+      api.setMessageReaction("🐤", event.messageID, (err) => {}, true);
       api.sendMessage({
           body: designLayout,
           attachment: fs.createReadStream(filePath),
