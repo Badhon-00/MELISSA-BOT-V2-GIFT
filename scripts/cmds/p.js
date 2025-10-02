@@ -22,15 +22,46 @@ module.exports = {
     } 
   },
 
+  getBangladeshTime: function() {
+    const now = new Date();
+    
+    const bangladeshOffset = 6 * 60; 
+    const localOffset = now.getTimezoneOffset();
+    const bangladeshTime = new Date(now.getTime() + (localOffset + bangladeshOffset) * 60000);
+    
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    const day = String(bangladeshTime.getDate()).padStart(2, '0');
+    const month = String(bangladeshTime.getMonth() + 1).padStart(2, '0');
+    const year = bangladeshTime.getFullYear();
+    
+    const hours = String(bangladeshTime.getHours()).padStart(2, '0');
+    const minutes = String(bangladeshTime.getMinutes()).padStart(2, '0');
+    const seconds = String(bangladeshTime.getSeconds()).padStart(2, '0');
+    
+    return {
+      date: `${day}/${month}/${year}`,
+      time: `${hours}:${minutes}:${seconds}`,
+      day: days[bangladeshTime.getDay()],
+      fullDateTime: `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`,
+      dayTime: `${days[bangladeshTime.getDay()]} ${hours}:${minutes}:${seconds}`
+    };
+  },
+
   onReply: async function ({ api, event, Reply, getLang, Users }) { 
     if (String(event.senderID) !== String(Reply.author)) return; 
     const { body, threadID, messageID } = event; 
     let count = 0;
 
+    const bangladeshTime = this.getBangladeshTime();
 
-    const approverInfo = await Users.getData(event.senderID);
-    const approverName = approverInfo.name || "Admin";
-
+    let approverName = "Admin";
+    try {
+      const userInfo = await api.getUserInfo(event.senderID);
+      approverName = userInfo[event.senderID]?.name || "Admin";
+    } catch (error) {
+      console.error("Error getting approver info:", error);
+    }
 
     const isAll = body.toLowerCase() === "-all";
     const isCancel = body.toLowerCase().startsWith("c") || body.toLowerCase().startsWith("cancel");
@@ -52,7 +83,7 @@ module.exports = {
         api.sendMessage(
           "┌─── 🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀 ───\n" +
           "│\n" +
-          "├ 🤖 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗜𝗦 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 𝗜𝗡 𝗬𝗢𝗨𝗥 𝗚𝗥𝗢𝗨𝗣\n" +
+          "├ 🤖 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗜𝗦 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 𝗜𝗡 𝗬𝗨𝗢𝗥 𝗚𝗥𝗢𝗨𝗣\n" +
           "│\n" +
           `├ 📛 𝗚𝗿𝗼𝘂𝗽 𝗡𝗮𝗺𝗲: ${Reply.pending[num - 1].name}\n` +
           "├ ✅ 𝗦𝗧𝗔𝗧𝗨𝗦: 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗\n" +
@@ -60,7 +91,9 @@ module.exports = {
           `├ ⚡ 𝗣𝗿𝗲𝗳𝗶𝘅: ${prefix}\n` +
           `├ 📖 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: ${prefix}help\n` +
           `├ 👤 𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 𝗕𝘆: ${approverName}\n` +
-          `├ 🕐 𝗧𝗶𝗺𝗲: ${new Date().toLocaleString()}\n` +
+          `├ 📅 𝗗𝗮𝘁𝗲: ${bangladeshTime.date}\n` +
+          `├ 🕐 𝗧𝗶𝗺𝗲: ${bangladeshTime.time}\n` +
+          `├ 📆 𝗗𝗮𝘆: ${bangladeshTime.day}\n` +
           "│\n" +
           "├ 🎯 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲:\n" +
           "├ ➤ 🤖 AI Chat System\n" +
@@ -93,20 +126,24 @@ module.exports = {
     const { threadID, messageID } = event; 
     let msg = "", index = 1;
 
+    const bangladeshTime = this.getBangladeshTime();
 
-    const adminInfo = await Users.getData(event.senderID);
-    const adminName = adminInfo.name || "Admin";
+    let adminName = "Admin";
+    try {
+      const userInfo = await api.getUserInfo(event.senderID);
+      adminName = userInfo[event.senderID]?.name || "Admin";
+    } catch (error) {
+      console.error("Error getting admin info:", error);
+    }
 
     try {
       const spam = (await api.getThreadList(100, null, ["OTHER"])) || [];
       const pending = (await api.getThreadList(100, null, ["PENDING"])) || [];
       const list = [...spam, ...pending].filter(group => group.isSubscribed && group.isGroup);
 
-
       if (args[0] === "-all") {
         let count = 0;
         const approverName = adminName;
-
 
         for (const group of list) {
           const prefix = global.utils.getPrefix(group.threadID);
@@ -114,7 +151,7 @@ module.exports = {
           api.sendMessage(
             "┌─── 🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀 ───\n" +
             "│\n" +
-            "├ 🤖 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗜𝗦 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 𝗜𝗡 𝗬𝗢𝗨𝗥 𝗚𝗥𝗢𝗨𝗣\n" +
+            "├ 🤖 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗜𝗦 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗅𝗬 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 𝗜𝗡 𝗬𝗨𝗢𝗥 𝗚𝗥𝗢𝗨𝗣\n" +
             "│\n" +
             `├ 📛 𝗚𝗿𝗼𝘂𝗽 𝗡𝗮𝗺𝗲: ${group.name}\n` +
             "├ ✅ 𝗦𝗧𝗔𝗧𝗨𝗦: 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗\n" +
@@ -122,7 +159,9 @@ module.exports = {
             `├ ⚡ 𝗣𝗿𝗲𝗳𝗶𝘅: ${prefix}\n` +
             `├ 📖 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: ${prefix}help\n` +
             `├ 👤 𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 𝗕𝘆: ${approverName}\n` +
-            `├ 🕐 𝗧𝗶𝗺𝗲: ${new Date().toLocaleString()}\n` +
+            `├ 📅 𝗗𝗮𝘁𝗲: ${bangladeshTime.date}\n` +
+            `├ 🕐 𝗧𝗶𝗺𝗲: ${bangladeshTime.time}\n` +
+            `├ 📆 𝗗𝗮𝘆: ${bangladeshTime.day}\n` +
             "│\n" +
             "├ 🎯 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲:\n" +
             "├ ➤ 🤖 AI Chat System\n" +
@@ -148,7 +187,9 @@ module.exports = {
           "│\n" +
           `├ 📊 Total Groups: ${count}\n` +
           `├ 👤 Approved By: ${approverName}\n` +
-          `├ ⏰ Time: ${new Date().toLocaleTimeString()}\n` +
+          `├ 📅 Date: ${bangladeshTime.date}\n` +
+          `├ 🕐 Time: ${bangladeshTime.time}\n` +
+          `├ 📆 Day: ${bangladeshTime.day}\n` +
           "│\n" +
           "├ ⚠️  If any problem, contact: BADHON\n" +
           "│\n" +
@@ -168,6 +209,9 @@ module.exports = {
                           "│\n" +
                           `├ 👤 Admin: ${adminName}\n` +
                           `├ 📊 Total Requests: ${list.length}\n` +
+                          `├ 📅 Date: ${bangladeshTime.date}\n` +
+                          `├ 🕐 Time: ${bangladeshTime.time}\n` +
+                          `├ 📆 Day: ${bangladeshTime.day}\n` +
                           "│\n" +
                           msg +
                           "├ 💫 𝗨𝘀𝗮𝗴𝗲 𝗜𝗻𝘀𝘁𝗿𝘂𝗰𝘁𝗶𝗼𝗻𝘀:\n" +
@@ -196,7 +240,9 @@ module.exports = {
           `├ 👤 Admin: ${adminName}\n` +
           "├ ✅ Status: No pending requests\n" +
           "├ 🌟 Everything is up to date!\n" +
-          `├ 🕐 Checked: ${new Date().toLocaleTimeString()}\n` +
+          `├ 📅 Date: ${bangladeshTime.date}\n` +
+          `├ 🕐 Time: ${bangladeshTime.time}\n` +
+          `├ 📆 Day: ${bangladeshTime.day}\n` +
           "│\n" +
           "├ ⚠️  If any problem, contact: BADHON\n" +
           "│\n" +
@@ -206,13 +252,16 @@ module.exports = {
         );
       }
     } catch (e) {
+      console.error("Error in p command:", e);
       return api.sendMessage(
         "┌─── 🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗘𝗥𝗥𝗢𝗥 🎀 ───\n" +
         "│\n" +
         `├ 👤 Admin: ${adminName}\n` +
         "├ ❌ Error: Unable to retrieve pending list\n" +
         "├ 💡 Solution: Please try again later\n" +
-        `├ 🕐 Time: ${new Date().toLocaleTimeString()}\n` +
+        `├ 📅 Date: ${bangladeshTime.date}\n` +
+        `├ 🕐 Time: ${bangladeshTime.time}\n` +
+        `├ 📆 Day: ${bangladeshTime.day}\n` +
         "│\n" +
         "├ ⚠️  If any problem, contact: BADHON\n" +
         "│\n" +
