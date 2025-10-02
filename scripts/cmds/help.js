@@ -16,7 +16,7 @@ module.exports = {
 		description: {
 			en: "View command usage and information"
 		},
-		category: "info",
+		category: "Help",
 		guide: {
 			en: "{pn} [empty | <page number> | <command name>]"
 		},
