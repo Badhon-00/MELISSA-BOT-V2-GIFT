@@ -30,7 +30,7 @@ function createProgressBar(percentage, length = 10) {
 function getCpuInfo() {
   const cpus = os.cpus();
   return {
-    model: cpus[0]?.model || "Unknown",
+    model: cpus[0]?.model || "Unknown Processor",
     cores: cpus.length,
     speed: `${(cpus[0]?.speed / 1000).toFixed(1)} GHz`
   };
@@ -39,8 +39,14 @@ function getCpuInfo() {
 function getNetworkInfo() {
   try {
     const interfaces = os.networkInterfaces();
-    const wifi = Object.values(interfaces).flat().find(i => i.family === 'IPv4' && !i.internal);
-    return wifi ? wifi.address : '127.0.0.1';
+    for (const interfaceName in interfaces) {
+      for (const interface of interfaces[interfaceName]) {
+        if (interface.family === 'IPv4' && !interface.internal) {
+          return interface.address;
+        }
+      }
+    }
+    return '127.0.0.1';
   } catch {
     return '127.0.0.1';
   }
@@ -48,46 +54,55 @@ function getNetworkInfo() {
 
 function getDiskInfo() {
   try {
-    
-    let df;
+    let dfOutput;
     try {
-      df = execSync("df -k /").toString();
-    } catch {
+      dfOutput = execSync("df -k /").toString();
+    } catch (e) {
       try {
-        df = execSync("df -k .").toString();
-      } catch {
-        return getFallbackDiskInfo();
+        dfOutput = execSync("df -k .").toString();
+      } catch (e) {
+        return {
+          used: 0,
+          total: 1024 * 1024 * 1024,
+          bar: createProgressBar(50),
+          percentage: 50
+        };
       }
     }
-    
-    const lines = df.split("\n");
-    if (lines.length < 2) return getFallbackDiskInfo();
-    
-    const dataLine = lines[1].split(/\s+/);
-    if (dataLine.length < 4) return getFallbackDiskInfo();
-    
+
+    const lines = dfOutput.trim().split('\n');
+    if (lines.length < 2) {
+      throw new Error("No disk info available");
+    }
+
+    const dataLine = lines[1].split(/\s+/).filter(Boolean);
+    if (dataLine.length < 4) {
+      throw new Error("Invalid disk info format");
+    }
+
     const used = parseInt(dataLine[2]) * 1024;
     const total = parseInt(dataLine[1]) * 1024;
-    const percent = Math.round((used / total) * 100);
+    
+    if (isNaN(used) || isNaN(total) || total === 0) {
+      throw new Error("Invalid disk values");
+    }
+
+    const percentage = Math.round((used / total) * 100);
     
     return {
       used,
       total,
-      bar: createProgressBar(percent),
-      percentage: percent
+      bar: createProgressBar(percentage),
+      percentage: percentage
     };
-  } catch (e) {
-    return getFallbackDiskInfo();
+  } catch (error) {
+    return {
+      used: 512 * 1024 * 1024, 
+      total: 1024 * 1024 * 1024, 
+      bar: createProgressBar(50),
+      percentage: 50
+    };
   }
-}
-
-function getFallbackDiskInfo() {
-  return {
-    used: 0,
-    total: 1,
-    bar: createProgressBar(0),
-    percentage: 0
-  };
 }
 
 module.exports = {
@@ -95,7 +110,7 @@ module.exports = {
     name: "uptime",
     aliases: ["up", "upt", "status"],
     version: "2.0",
-    author: "Badhon",
+    author: "nexo_here",
     shortDescription: "Show bot status & system info",
     longDescription: "Displays comprehensive bot uptime, system specifications, and resource usage statistics.",
     category: "system",
@@ -106,36 +121,27 @@ module.exports = {
     try {
       const uptime = getUptime();
       const threads = await threadsData.getAll();
-      const groups = threads.filter(t => t.threadInfo?.isGroup).length;
       const users = (await usersData.getAll()).length;
-      
-    
+      const groups = threads.filter(t => t.threadInfo?.isGroup).length;
       const totalMem = os.totalmem();
       const freeMem = os.freemem();
       const usedMem = totalMem - freeMem;
       const memUsage = (usedMem / totalMem) * 100;
-      
       const cpuInfo = getCpuInfo();
       const nodeVersion = process.version;
       const platform = os.platform();
       const hostname = os.hostname();
       const ip = getNetworkInfo();
-      
       const diskInfo = getDiskInfo();
-      
-      const botName = "🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀";
-      
       const loadAvg = os.loadavg().map(load => load.toFixed(2)).join(', ');
       const homeDir = os.homedir();
-      const operator = process.env.USER || process.env.USERNAME || 'Unknown';
-
-      const msg =
+      const operator = "BADHON";
+      const botName = "🎀 𝗠𝗘𝗟𝗜𝗦𝗦𝗔 𝗕𝗢𝗧 𝗩𝟯 🎀";
+      const msg = 
 `┌───  ${botName}  ───┐
-│
+
 ├─── 🏃 𝗨𝗣𝗧𝗜𝗠𝗘 ───
-│
 ├ ➤ ${uptime}
-│
 ├─── 📊 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦 ───
 ├ ➤ Users: ${users}
 ├ ➤ Groups: ${groups}
@@ -170,10 +176,19 @@ module.exports = {
 ├ ➤ Architecture: ${os.arch()}
 └───  ${botName}  ───┘`;
 
-      message.reply(msg);
-    } catch (err) {
-      console.error("Uptime command error:", err);
-      message.reply("❌ | Uptime command failed. Please try again later.");
+      await message.reply(msg);
+
+    } catch (error) {
+      console.error("Uptime command error:", error);
+      const simpleUptime = getUptime();
+      await message.reply(
+`🤖 Bot Status:
+⏰ Uptime: ${simpleUptime}
+💻 Platform: ${os.platform()}
+📊 Memory: ${formatBytes(os.totalmem() - os.freemem())} / ${formatBytes(os.totalmem())}
+👤 Operator: BADHON
+❌ Detailed stats unavailable`
+      );
     }
   }
 };
