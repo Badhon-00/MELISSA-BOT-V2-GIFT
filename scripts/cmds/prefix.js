@@ -10,7 +10,7 @@ module.exports = {
 		author: "BADHON",
 		countDown: 5,
 		role: 0,
-		description: "Change bot command prefix - Badhon access only",
+		description: "Change bot prefix - Badhon access only",
 		category: "System",
 		guide: {
 			en: "   {pn} <new prefix>: Change prefix for current chat\n   Example: {pn} !\n\n   {pn} <new prefix> -g: Change system-wide prefix (Badhon only)\n   Example: {pn} ! -g\n\n   {pn} reset: Reset to default prefix"
