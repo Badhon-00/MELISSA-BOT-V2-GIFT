@@ -12,8 +12,8 @@
   "antiInbox": false,
   "language": "en",
   "notesLanguage": "change to your language with ISO 639-1 code, available languages: vi (Vietnamese), en (English)",
-  "nickNameBot": "—͞💜 𝐌𝐄𝐋𝐈𝐒𝐒𝐀 𝐁𝐀𝐁𝐘 𝐁𝐎𝐓",
-  "prefix": "🖕",
+  "nickNameBot": "পেতনী  𝐁𝐎𝐓",
+  "prefix": "+",
   "api": "https://api.noobs-api.rf.gd/dipto",
   "approval": false,
   "reactBy": {
@@ -31,14 +31,14 @@
     "ignoreCommand": []
   },
   "adminBot": [
-       "",
+       "61579624827164",
 		"",
 		""
   ],
   "mainAdmin": [
     "100009987932864",
 		"",
-		"61563924155936"
+		"61579624827164"
   ],
   "whiteListMode": {
     "enable": false,
@@ -167,4 +167,4 @@
     "autoReconnect": false,
     "notes": "Document here: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions "
   }
-}
+  }
