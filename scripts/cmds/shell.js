@@ -1,35 +1,41 @@
 const { exec } = require('child_process');
 
-module.exports.config = {
+module.exports = {
+  config: {
     name: "shell",
-    aliases: ["sh"],
     version: "1.0",
-    author: "Badhon",
+    author: "BaYjid",
+    countDown: 5,
     role: 2,
-    description: "Execute shell commands",
-    category: "System",
+    shortDescription: "Execute shell commands",
+    longDescription: "",
+    category: "shell",
     guide: {
-      en: "{pn} <command>",
-    },
-    coolDowns: 5
-};
-
-module.exports.onStart = async ({ message, args }) => {
-     // don't change author name otherwise you got ban
-    if (!args.length) {
-        return message.reply("Please provide a command to execute.");
+      vi: "{p}{n} <command>",
+      en: "{p}{n} <command>"
     }
-    const command = args.join(' ');
+  },
+
+  onStart: async function ({ args, message }) {
+    const command = args.join(" ");
+
+    if (!command) {
+      return message.reply("Please provide a command to execute.");
+    }
 
     exec(command, (error, stdout, stderr) => {
-        if (error) {
-            return message.reply(`Error executing command: ${error.message}`);
-        }
-        if (stderr) {
-            return message.reply(`Shell Error: ${stderr}`);
-        }
+      if (error) {
+        console.error(`Error executing command: ${error}`);
+        return message.reply(`An error occurred while executing the command: ${error.message}`);
+      }
 
- const output = stdout || "Command executed successfully with no output.";
-        message.reply(`${output}`);
+      if (stderr) {
+        console.error(`Command execution resulted in an error: ${stderr}`);
+        return message.reply(`Command execution resulted in an error: ${stderr}`);
+      }
+
+      console.log(`Command executed successfully:\n${stdout}`);
+      message.reply(`Command executed successfully:\n${stdout}`);
     });
+  }
 };
