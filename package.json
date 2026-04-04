@@ -2,7 +2,7 @@
   "name": "MELISSA-BOT-V3",
   "version": "1.5.35",
   "description": "A simple Bot chat messenger using personal account. Made by NTKhang.",
-  "main": "Melissa.js",
+  "main": "index.js",
   "engines": {
     "node": "16.x",
     "npm": ">=7.0.0"
