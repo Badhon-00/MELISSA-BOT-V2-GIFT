@@ -1,2 +1,5 @@
 language = "nodejs"
 run = "npm start"
+
+[agent]
+expertMode = true
