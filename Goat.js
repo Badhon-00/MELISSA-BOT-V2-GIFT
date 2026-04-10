@@ -1,7 +1,7 @@
 /**
- * @author NTKhang & Modded by NeoKEX
- * ! The source code is written by NTKhang, please don't change the author's name everywhere. Thank you for using
- * ! Official source code: https://github.com/ntkhang03/Goat-Bot-V2
+ * @author Badhon
+ * ! The source code is written by Badhon, please don't change the author's name everywhere. Thank you for using
+ * ! Official source code: https://github.com/Badhon-00/MELISSA-BOT.git
  * ! If you do not download the source code from the above address, you are using an unknown version and at risk of having your account hacked
  *
  * English:
@@ -10,12 +10,8 @@
  * ! If you change it, you will be banned forever
  * Thank you for using
  *
- * Vietnamese:
- * ! Vui lòng không thay đổi mã bên dưới, nó rất quan trọng đối với dự án.
- * Nó là động lực để tôi duy trì và phát triển dự án miễn phí.
- * ! Nếu thay đổi nó, bạn sẽ bị cấm vĩnh viễn
- * Cảm ơn bạn đã sử dụng
  */
+
 
 process.on('unhandledRejection', (error, promise) => {
 	log.error('UNHANDLED_REJECTION', error.message || error);
