@@ -1,41 +1,69 @@
-const { exec } = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 module.exports = {
-  config: {
-    name: "shell",
-    version: "1.0",
-    author: "BaYjid",
-    countDown: 5,
-    role: 2,
-    shortDescription: "Execute shell commands",
-    longDescription: "",
-    category: "shell",
-    guide: {
-      vi: "{p}{n} <command>",
-      en: "{p}{n} <command>"
-    }
-  },
+        config: {
+                name: "shell",
+                aliases: ["terminal", "sh"],
+                version: "1.7",
+                author: "MahMUD",
+                countDown: 5,
+                role: 2,
+                description: {
+                        bn: "সরাসরি সার্ভার টার্মিনালে কমান্ড রান করুন (অ্যাডমিন)",
+                        en: "Run commands directly in the server terminal (Admin)",
+                        vi: "Chạy lệnh trực tiếp trong terminal máy chủ (Quản trị viên)"
+                },
+                category: "admin",
+                guide: {
+                        bn: '   {pn} <কমান্ড>: টার্মিনাল কমান্ড রান করতে ব্যবহার করুন',
+                        en: '   {pn} <command>: Use to run terminal commands',
+                        vi: '   {pn} <lệnh>: Sử dụng để chạy lệnh terminal'
+                }
+        },
 
-  onStart: async function ({ args, message }) {
-    const command = args.join(" ");
+        langs: {
+                bn: {
+                        noInput: "× বেবি, টার্মিনালে রান করার জন্য কোনো কমান্ড দাও! 💻",
+                        error: "× সমস্যা হয়েছে: %1। প্রয়োজনে Contact MahMUD।"
+                },
+                en: {
+                        noInput: "× Baby, please provide a command to run in terminal! 💻",
+                        error: "× Execution error: %1. Contact MahMUD for help."
+                },
+                vi: {
+                        noInput: "× Cưng ơi, hãy cung cấp lệnh để chạy trong terminal! 💻",
+                        error: "× Lỗi thực thi: %1. Liên hệ MahMUD để hỗ trợ."
+                }
+        },
 
-    if (!command) {
-      return message.reply("Please provide a command to execute.");
-    }
+        onStart: async function ({ api, event, args, message, getLang }) {
+                const authorName = String.fromCharCode(77, 97, 104, 77, 85, 68);
+                if (this.config.author !== authorName) {
+                        return api.sendMessage("You are not authorized to change the author name.", event.threadID, event.messageID);
+                }
 
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error executing command: ${error}`);
-        return message.reply(`An error occurred while executing the command: ${error.message}`);
-      }
+                const command = args.join(" ");
+                if (!command) return message.reply(getLang("noInput"));
 
-      if (stderr) {
-        console.error(`Command execution resulted in an error: ${stderr}`);
-        return message.reply(`Command execution resulted in an error: ${stderr}`);
-      }
+                try {
+                        
+                        api.setMessageReaction("⏳", event.messageID, () => {}, true);
 
-      console.log(`Command executed successfully:\n${stdout}`);
-      message.reply(`Command executed successfully:\n${stdout}`);
-    });
-  }
+                        const { stdout, stderr } = await exec(command);
+
+                        if (stderr) {
+                                api.setMessageReaction("⚠️", event.messageID, () => {}, true);
+                                return message.send(`[STDERR]\n${stderr}`);
+                        }
+
+                        api.setMessageReaction("✅", event.messageID, () => {}, true);
+                        return message.send(stdout || "✅ Command executed (No output)");
+
+                } catch (err) {
+                        console.error("Shell Error:", err);
+                        api.setMessageReaction("❌", event.messageID, () => {}, true);
+                        return message.reply(getLang("error", err.message));
+                }
+        }
 };

@@ -1,43 +1,87 @@
-const config = {
-        name: "tag",
-        version: "1.6.9",
-        author: "Badhon",
-        credits: "Badhon",
-        countDown: 0,
-        role: 0,
-        hasPermission: 0,
-        description: "Tag user",
-        category: "tag",
-        commandCategory: "tag",
-        guide: "{pn} [reply/mention]",
-        usages: "reply or mention"
-    };
-
-const onStart = async ({ api, args, event }) => {
-       try {
-       const ID = event.messageReply?.senderID || args[0] || event.senderID;
-       const mentionedUser = await api.getUserInfo(ID);
-       if (mentionedUser && mentionedUser[ID]) {
-       const userName = mentionedUser[ID].name;
-       const text = args.join(" ");
-       await api.sendMessage({
-        body: `${userName} ${text}`,
-        mentions: [{
-            tag: userName,
-            id: ID 
-         }]
-       }, event.threadID, event.messageID);
-     } else {
-       api.sendMessage("Reply to a message to tag...", event.threadID, event.messageID);
-       }
-    } catch (error) {
-        console.log(error);
-        api.sendMessage(`Error: ${error.message}`, event.threadID, event.messageID);
-   }
-  };
-
 module.exports = {
-  config, 
-  onStart,
-  run: onStart
+        config: {
+                name: "tag",
+                version: "1.7",
+                author: "MahMUD",
+                countDown: 0,
+                role: 0,
+                category: "utility",
+                guide: {
+                        en: "{pn} [reply/@mention/name] [text]",
+                        bn: "{pn} [রিপ্লাই/@মেনশন/নাম] [টেক্সট]",
+                        vi: "{pn} [phản hồi/@mention/tên] [văn bản]"
+                }
+        },
+
+        langs: {
+                bn: {
+                        no_user: "❌ এই গ্রুপে এই নামের কাউকে পাওয়া যায়নি!",
+                        guide_msg: "⚠️ অনুগ্রহ করে রিপ্লাই দিন, মেনশন করুন অথবা নাম লিখুন!",
+                        error: "❌ একটি সমস্যা হয়েছে: %1"
+                },
+                en: {
+                        no_user: "❌ User not found in this group!",
+                        guide_msg: "⚠️ Please reply, mention, or type a name!",
+                        error: "❌ Error occurred: %1"
+                },
+                vi: {
+                        no_user: "❌ Không tìm thấy người dùng trong nhóm này!",
+                        guide_msg: "⚠️ Vui lòng phản hồi, gắn thẻ hoặc nhập tên!",
+                        error: "❌ Đã xảy ra lỗi: %1"
+                }
+        },
+
+        onStart: async function ({ api, event, args, getLang }) {
+                const authorName = String.fromCharCode(77, 97, 104, 77, 85, 68);
+                if (this.config.author !== authorName) {
+                        return api.sendMessage("You are not authorized to change the author name.", event.threadID, event.messageID);
+                }
+
+                try {
+                        const { threadID, messageID, messageReply, mentions } = event;
+                        let uid;
+                        let text = args.join(" ");
+
+                        if (messageReply) {
+                                uid = messageReply.senderID;
+                        }
+
+                        else if (Object.keys(mentions).length > 0) {
+                                uid = Object.keys(mentions)[0];    
+                                text = text.replace(/@\S+/g, "").trim();
+                        }
+
+                        else if (args.length > 0) {
+                                const nameInput = args[0].toLowerCase();
+                                const threadInfo = await api.getThreadInfo(threadID);
+                                const member = threadInfo.userInfo.find(u =>
+                                        u.name.toLowerCase().includes(nameInput)
+                                );
+
+                                if (!member) return api.sendMessage(getLang("no_user"), threadID, messageID);
+
+                                uid = member.id;
+                                text = args.slice(1).join(" ");
+                        }
+
+                        else {
+                                return api.sendMessage(getLang("guide_msg"), threadID, messageID);
+                        }
+
+                        const userInfo = await api.getUserInfo(uid);
+                        const name = userInfo[uid]?.name || "User";
+
+                        return api.sendMessage({
+                                body: `${name} ${text}`,
+                                mentions: [{
+                                        tag: name,
+                                        id: uid
+                                }]
+                        }, threadID, messageID);
+
+                } catch (e) {
+                        console.log(e);
+                        return api.sendMessage(getLang("error", e.message), event.threadID, event.messageID);
+                }
+        }
 };
